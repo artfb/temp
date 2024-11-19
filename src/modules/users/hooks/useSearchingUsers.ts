@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useState } from "react";
 import { useGetUsersQuery } from "../queries";
-import { useForm, useWatch } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { SearchFormFields } from "../types";
 import { userSearchFormSchema } from "../schemas";
@@ -19,48 +19,30 @@ export const useSearchingUsers = () => {
     mode: "onSubmit",
   });
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isPending } =
-    useGetUsersQuery(
-      {
-        query: searchQuery,
-      },
-      {
-        enabled: !!searchQuery,
-      },
-    );
+  const { data, isFetching, isError } = useGetUsersQuery(
+    {
+      query: searchQuery,
+    },
+    {
+      enabled: !!searchQuery,
+    },
+  );
 
-  const value = useWatch({
-    control,
-    exact: true,
-    name: "query",
-  });
-
-  const handleSearchQueryChange = useCallback(() => {
-    console.log("change search query");
-
-    handleSubmit(({ query }) => setSearchQuery(query))();
-  }, [handleSubmit]);
-
-  useEffect(() => {
-    if (!value) return;
-
-    const timeout = setTimeout(() => {
-      handleSearchQueryChange();
-    }, 2000);
-
-    return () => clearTimeout(timeout);
-  }, [handleSearchQueryChange, value]);
-
-  const users = useMemo(() => {
-    return data ? data.pages.flatMap((d) => d.items) : [];
-  }, [data]);
+  const handleSubmitFn = useCallback(
+    (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      handleSubmit(({ query }) => setSearchQuery(query))();
+    },
+    [handleSubmit],
+  );
 
   return {
-    users,
-    hasNextPage,
-    isLoading: isFetchingNextPage || isPending,
-    handleNextPage: fetchNextPage,
+    users: data?.items || [],
+    isLoading: isFetching,
+    isError,
     errors,
     control,
+    searchQuery,
+    handleSubmit: handleSubmitFn,
   };
 };

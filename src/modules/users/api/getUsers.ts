@@ -1,11 +1,12 @@
-import { apiClient } from "../../../api";
-import { GetUsersQueryParamsDto, GetUsersResponseDataDto } from "../dtos";
-import { SEARCH_USERS_API_URL } from "./endpoints";
+import { octokit } from "../../../api/apiClient";
+import { GetUsersRequestParamsDto } from "../dtos";
 
-export const getUsers = (queryParams: GetUsersQueryParamsDto) => {
-  return apiClient
-    .get<GetUsersResponseDataDto>(SEARCH_USERS_API_URL, {
-      params: queryParams,
+export const getUsers = (requestParams: GetUsersRequestParamsDto) => {
+  return octokit.rest.search
+    .users({
+      page: requestParams.page,
+      per_page: requestParams.per_page,
+      q: `${requestParams.q} in:login`,
     })
     .then((res) => res.data);
 };

@@ -1,4 +1,4 @@
-import { PaginatedQueryResponseDataDto } from "../../../api";
-import { User } from "../types";
+import { RestEndpointMethodTypes } from "@octokit/plugin-rest-endpoint-methods";
 
-export type GetUsersResponseDataDto = PaginatedQueryResponseDataDto<User>;
+export type GetUsersResponseDataDto =
+  RestEndpointMethodTypes["search"]["users"]["response"]["data"];

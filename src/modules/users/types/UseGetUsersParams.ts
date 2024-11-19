@@ -1,3 +1,3 @@
-export type UseGetQueryParams = {
+export type UseGetUsersParams = {
   query: string;
 };

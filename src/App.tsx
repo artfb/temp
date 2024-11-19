@@ -1,12 +1,14 @@
 import { QueryClientProvider } from "@tanstack/react-query";
-import "./App.css";
-import { SearchUsers } from "./modules/users/components/SearchUsers";
 import { queryClient } from "./api";
+import { Layout } from "./layout";
+import { SearchUsers } from "./modules/users";
 
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <SearchUsers />
+      <Layout>
+        <SearchUsers />
+      </Layout>
     </QueryClientProvider>
   );
 }

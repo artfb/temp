@@ -85,10 +85,33 @@ describe("SearchUsersPage", () => {
     expect(await screen.findByText("No results")).toBeInTheDocument();
   });
 
-  it("handles error", async () => {
+  it("handles server error", async () => {
     server.use(
       http.get("https://api.github.com/search/users", () => {
         return new HttpResponse(null, { status: 500 });
+      }),
+    );
+
+    render(<SearchUsersPage />);
+
+    const searchInput = screen.getByPlaceholderText("Search...");
+    const searchButton = screen.getByRole("button", { name: /search/i });
+
+    await act(async () => {
+      await userEvent.type(searchInput, "test query");
+    });
+
+    await act(async () => {
+      searchButton.click();
+    });
+
+    expect(await screen.findByText("Error fetching users")).toBeInTheDocument();
+  });
+
+  it("handles client request error", async () => {
+    server.use(
+      http.get("https://api.github.com/search/users", () => {
+        return new HttpResponse(null, { status: 403 });
       }),
     );
 

@@ -1,4 +1,3 @@
-import { describe, it, expect, beforeEach, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { UserRepos } from "../UserRepos";
 import { useGetUserReposQuery } from "../../queries/useGetUserRepos.query";
@@ -15,7 +14,6 @@ describe("UserRepos", () => {
   ];
 
   beforeEach(() => {
-    // Reset mock before each test
     vi.clearAllMocks();
   });
 

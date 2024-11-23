@@ -7,17 +7,18 @@ import { userSearchFormSchema } from "../schemas";
 
 export const useSearchingUsers = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm<SearchFormFields>({
+  const form = useForm<SearchFormFields>({
     resolver: yupResolver(userSearchFormSchema),
     defaultValues: {
       query: "",
     },
     mode: "onSubmit",
   });
+
+  const {
+    handleSubmit,
+    formState: { errors },
+  } = form;
 
   const { data, isFetching, isError } = useGetUsersQuery(
     {
@@ -41,7 +42,7 @@ export const useSearchingUsers = () => {
     isLoading: isFetching,
     isError,
     errors,
-    control,
+    form,
     searchQuery,
     handleSubmit: handleSubmitFn,
   };

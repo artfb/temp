@@ -9,6 +9,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import { useGetUserReposQuery } from "../queries/useGetUserRepos.query";
 import { RepoDetails } from "./RepoDetails";
+import { Box, Button } from "@mui/material";
 
 type UserReposProps = {
   username: string;
@@ -18,13 +19,21 @@ export const UserRepos = (props: UserReposProps) => {
   const [expanded, setExpanded] = useState<boolean>(false);
   const { username } = props;
 
-  const { data, isError, isPending } = useGetUserReposQuery(
-    { username },
-    { enabled: expanded },
-  );
+  const {
+    data,
+    isError,
+    isPending,
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+  } = useGetUserReposQuery({ username }, { enabled: expanded });
 
   const handleExpanded = () => {
     setExpanded((state) => !state);
+  };
+
+  const handleNextPage = () => {
+    fetchNextPage();
   };
 
   return (
@@ -45,6 +54,13 @@ export const UserRepos = (props: UserReposProps) => {
         {data?.map((repository) => (
           <RepoDetails key={repository.name} repository={repository} />
         ))}
+
+        {hasNextPage && (
+          <Box>
+            <Button onClick={handleNextPage}>Load more</Button>{" "}
+            {isFetchingNextPage && <CircularProgress size={12} />}
+          </Box>
+        )}
       </AccordionDetails>
     </Accordion>
   );

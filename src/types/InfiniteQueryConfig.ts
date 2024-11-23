@@ -8,8 +8,8 @@ import {
 export type InfiniteQueryConfig<
   TQueryFnData,
   TPageParam,
-  TError = DefaultError,
   TData = InfiniteData<TQueryFnData, TPageParam>,
+  TError = DefaultError,
   TQueryKey extends QueryKey = QueryKey,
 > = Partial<
   UseInfiniteQueryOptions<

@@ -1,8 +1,13 @@
 import "@testing-library/jest-dom";
-import { afterEach } from "vitest";
-import { cleanup } from "@testing-library/react";
+import { afterEach, beforeAll, afterAll } from "vitest";
+import { server } from "./server";
 
-// hooks are reset before each suite
-afterEach(() => {
-  cleanup();
+beforeAll(() => {
+  server.listen();
 });
+
+afterEach(() => {
+  server.resetHandlers();
+});
+
+afterAll(() => server.close());

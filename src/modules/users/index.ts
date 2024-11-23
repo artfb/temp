@@ -1,1 +1,1 @@
-export { SearchUsers } from "./components/SearchUsers";
+export { SearchUsersPage } from "./components/SearchUsersPage";

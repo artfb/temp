@@ -1,5 +1,4 @@
-export type GetUserReposRequestParamsDto = {
-  username: string;
-  per_page?: number;
-  page?: number;
-};
+import { RestEndpointMethodTypes } from "@octokit/rest";
+
+export type GetUserReposRequestParamsDto =
+  RestEndpointMethodTypes["repos"]["listForUser"]["parameters"];

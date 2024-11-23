@@ -1,31 +1,18 @@
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
 import Grid from "@mui/material/Grid2";
 
-import { SearchInput } from "./SearchInput";
 import { UsersList } from "./UsersList";
 import { useSearchingUsers } from "../hooks";
+import { SearchForm } from "./SearchForm";
 
-export const SearchUsers = () => {
-  const { users, isLoading, isError, control, searchQuery, handleSubmit } =
+export const SearchUsersPage = () => {
+  const { users, isLoading, isError, form, searchQuery, handleSubmit } =
     useSearchingUsers();
 
   return (
     <Grid container alignItems="center" direction="column" gap={4}>
-      <Grid
-        component="form"
-        gap={2}
-        container
-        onSubmit={handleSubmit}
-        size={{ xs: 12, sm: 10, md: 6 }}
-      >
-        <SearchInput control={control} placeholder="Search..." />
-
-        <Button type="submit" fullWidth variant="contained">
-          Search
-        </Button>
-      </Grid>
+      <SearchForm form={form} onSubmit={handleSubmit} />
 
       <Grid container size={{ xs: 12, sm: 10, md: 6 }}>
         {isLoading && <CircularProgress />}
